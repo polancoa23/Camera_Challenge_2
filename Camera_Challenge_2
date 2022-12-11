@@ -1,0 +1,54 @@
+#include <kipr/wombat.h>
+// VARIABLES
+int lmotor = 3; // left motor is plugged into port #3 
+int rmotor = 0; // right motor is plugged into port #0
+int lspeed = 30; // left motor goes at 30% of power 
+int rspeed = 35; // right motor goes at 35% of power 
+int nospeed = 0; // either motor goes at 0% power
+int target = 2650; // value for range finder that when reached, the motors turn off
+int red = 0; // channel # for red is 0
+int front_IR = 0; // range finder plugged into port #0
+//DECLARE VARIABLES
+void left_turn(); // function for pivotal left turn
+void right_turn(); // function for pivotal right turn
+void forward(); // function for moving forward
+int main()
+{
+    camera_open_black(); // turn on camera
+    while(analog(front_IR) <= target){ // while the robot hasn't reached the distance to stop in front of the color red it will perform the following:
+        camera_update(); // take a picture
+        printf("obj-x = %d\n",get_object_center_x(red,0)); // print out the x value of red
+		    if(get_object_count(red) > 0){ // if it sees red it will perform the following
+              if(get_object_center_x(red,0) < 71){ // if the x value of red is less than 71 it will perform the following:
+                  left_turn(); // do a left turn
+        	    }
+        	    if(get_object_center_x(0,0) > 81){ // if the x value of red is greater than 81 it will perform the following:
+            	    right_turn();	// do a right turn
+        	    }
+        	    if( (get_object_center_x(0,0) >= 71) && (get_object_center_x(0,0) <= 91) ){ // if the x value of red falls into that middle range between 71 and 91 it will perform the following:
+            	    forward(); // move forward      		
+        	    }
+		    }
+		    else{ // if it doesnt see red it will perform the following:
+			      ao(); // shut down motors
+		    }
+    }
+    return 0; // exit out of main
+}
+void left_turn(){
+    motor(lmotor, 0); // left motor stays still
+    motor(rmotor, rspeed); // right motor goes at 35% power
+    printf("Less than 71, turning left\n"); // print out that it's turning left cuz the x val is < 71
+}
+
+void right_turn(){
+    motor(lmotor, lspeed); // left motor goes at 30% power
+    motor(rmotor, 0); // right motor stays stil
+    printf("Greater than 81, turning right\n"); // print out that it's turning left cuz the x val is greater than 81 
+}
+void forward()
+{
+    motor(rmotor,rspeed); // both motors move at the same speed
+    motor(lmotor,rspeed); 
+    printf("In middle range, going forward\n"); // prints that it's going forward cuz the x val falls between 71 and 91
+}
