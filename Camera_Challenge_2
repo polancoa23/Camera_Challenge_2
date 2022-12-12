@@ -22,10 +22,10 @@ int main()
               if(get_object_center_x(red,0) < 71){ // if the x value of red is less than 71 it will perform the following:
                   left_turn(); // do a left turn
         	    }
-        	    if(get_object_center_x(0,0) > 81){ // if the x value of red is greater than 81 it will perform the following:
+        	    if(get_object_center_x(red,0) > 81){ // if the x value of red is greater than 81 it will perform the following:
             	    right_turn();	// do a right turn
         	    }
-        	    if( (get_object_center_x(0,0) >= 71) && (get_object_center_x(0,0) <= 91) ){ // if the x value of red falls into that middle range between 71 and 91 it will perform the following:
+        	    if( (get_object_center_x(red,0) >= 71) && (get_object_center_x(0,0) <= 91) ){ // if the x value of red falls into that middle range between 71 and 91 it will perform the following:
             	    forward(); // move forward      		
         	    }
 		    }
@@ -36,14 +36,14 @@ int main()
     return 0; // exit out of main
 }
 void left_turn(){
-    motor(lmotor, 0); // left motor stays still
+    motor(lmotor, nospeed); // left motor stays still
     motor(rmotor, rspeed); // right motor goes at 35% power
     printf("Less than 71, turning left\n"); // print out that it's turning left cuz the x val is < 71
 }
 
 void right_turn(){
     motor(lmotor, lspeed); // left motor goes at 30% power
-    motor(rmotor, 0); // right motor stays stil
+    motor(rmotor, nospeed); // right motor stays stil
     printf("Greater than 81, turning right\n"); // print out that it's turning left cuz the x val is greater than 81 
 }
 void forward()
